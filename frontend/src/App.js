@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from './api'; // Import your API client
 import './css/app.css';
 import TodoList from './components/TodoList';
 import LoginForm from './components/LoginForm';
@@ -11,7 +11,6 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize app with user data from localStorage
   useEffect(() => {
     const token = localStorage.getItem('token');
     const name = localStorage.getItem('name');
@@ -20,8 +19,7 @@ function App() {
     if (token && name && id) {
       setUser(name);
       setUserId(id);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setAuthMode(null); // Reset authMode to show dashboard
+      setAuthMode(null);
     }
     setIsLoading(false);
   }, []);
@@ -30,20 +28,18 @@ function App() {
     localStorage.setItem('token', token);
     localStorage.setItem('name', name);
     localStorage.setItem('userId', id);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setUser(name);
     setUserId(id);
-    setAuthMode(null); // Immediately show dashboard after login
+    setAuthMode(null);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('name');
     localStorage.removeItem('userId');
-    delete axios.defaults.headers.common['Authorization'];
     setUser(null);
     setUserId(null);
-    setAuthMode(null); // Reset to welcome screen
+    setAuthMode(null);
   };
 
   if (isLoading) {
