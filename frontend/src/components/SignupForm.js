@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import '../css/signupForm.css'; // New CSS file
+import '../css/signupForm.css';
+import apiClient from '../api';  // ✅ Use apiClient for cleaner API calls
 
 const SignupForm = ({ onSwitchToLogin }) => {
   const [name, setName] = useState('');
@@ -10,7 +10,8 @@ const SignupForm = ({ onSwitchToLogin }) => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/signup', {
+      // ✅ Replaced hardcoded axios with apiClient
+      await apiClient.post('/api/auth/signup', {
         name,
         email,
         password
@@ -20,6 +21,7 @@ const SignupForm = ({ onSwitchToLogin }) => {
       setName('');
       setEmail('');
       setPassword('');
+      
       if (typeof onSwitchToLogin === 'function') {
         onSwitchToLogin();
       }
@@ -103,7 +105,7 @@ const SignupForm = ({ onSwitchToLogin }) => {
         </form>
 
         <div className="login-prompt">
-          Already have an account? 
+          Already have an account?
           <button onClick={onSwitchToLogin} className="login-link">
             Login here 🔑
           </button>

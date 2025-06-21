@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import '../css/addTodoForm.css';
+import apiClient from '../api';  // ✅ Replaced direct axios import with apiClient
 
 const AddTodoForm = ({ onAdd }) => {
   const [title, setTitle] = useState('');
@@ -26,15 +26,14 @@ const AddTodoForm = ({ onAdd }) => {
         return;
       }
 
-      await axios.post('http://localhost:5000/api/todos', {
+      // ✅ Use apiClient instead of axios + no hardcoded URL
+      await apiClient.post('/api/todos', {
         title,
         description,
         priority,
         dueDate
       }, {
-        headers: {
-          'x-auth-token': token
-        }
+        headers: { 'x-auth-token': token }
       });
 
       setTitle('');

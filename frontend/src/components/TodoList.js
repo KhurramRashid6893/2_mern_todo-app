@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
+import apiClient from '../api'; // ✅ Use your centralized API client
 import TodoItem from './TodoItem';
 import AddTodoForm from './AddTodoForm';
 import '../css/todolist.css';
@@ -28,20 +28,21 @@ const TodoList = ({ userId }) => {
         return;
       }
 
-      const res = await axios.get('http://localhost:5000/api/todos', {
+      // ✅ Use apiClient
+      const res = await apiClient.get('/api/todos', {
         headers: { 'x-auth-token': token }
       });
 
       let data = res.data;
 
-      // Apply filter
+      // Filter
       data = data.filter(todo => {
         if (filter === 'active') return !todo.completed;
         if (filter === 'completed') return todo.completed;
         return true;
       });
 
-      // Apply search
+      // Search
       if (searchTerm) {
         const term = searchTerm.toLowerCase();
         data = data.filter(todo =>
@@ -50,7 +51,7 @@ const TodoList = ({ userId }) => {
         );
       }
 
-      // Apply sort
+      // Sort
       data = data.sort((a, b) => {
         if (sortBy === 'createdAt') {
           return new Date(b.createdAt) - new Date(a.createdAt);
@@ -180,6 +181,7 @@ const TodoList = ({ userId }) => {
             key={todo._id}
             todo={todo}
             onUpdate={() => fetchTodos(true)}
+            currentUserId={userId}
           />
         ))}
       </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import '../css/loginForm.css';
+import apiClient from '../api';  // ✅ Import centralized API client
 
 const LoginForm = ({ onLogin, onSwitchToSignup }) => {
   const [email, setEmail] = useState('');
@@ -14,16 +14,17 @@ const LoginForm = ({ onLogin, onSwitchToSignup }) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    
+
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', {
+      // ✅ Use apiClient to avoid hardcoding URL
+      const res = await apiClient.post('/api/auth/login', {
         email,
         password
       });
-      
-      // Pass name, token, and user ID to App
+
+      // ✅ Pass name, token, and user ID to parent
       onLogin(res.data.user.name, res.data.token, res.data.user.id);
-      
+
       if (rememberMe) {
         localStorage.setItem('rememberedEmail', email);
       }
@@ -46,14 +47,14 @@ const LoginForm = ({ onLogin, onSwitchToSignup }) => {
           <h2>Welcome Back! 👋</h2>
           <p>Sign in to continue your productivity journey</p>
         </div>
-        
+
         <form onSubmit={handleLogin} className="login-form">
           {error && (
             <div className="error-message">
               ⚠️ {error}
             </div>
           )}
-          
+
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
             <div className="input-with-icon">
@@ -81,8 +82,8 @@ const LoginForm = ({ onLogin, onSwitchToSignup }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="password-toggle"
                 onClick={togglePasswordVisibility}
               >
@@ -105,8 +106,8 @@ const LoginForm = ({ onLogin, onSwitchToSignup }) => {
             </button>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="login-btn"
             disabled={isLoading}
           >
@@ -119,13 +120,13 @@ const LoginForm = ({ onLogin, onSwitchToSignup }) => {
         </form>
 
         <div className="signup-prompt">
-          Don't have an account? 
+          Don't have an account?
           <button onClick={onSwitchToSignup} className="signup-link">
             Create account 🚀
           </button>
         </div>
       </div>
-      
+
       <div className="login-benefits">
         <h3>Your Productivity Awaits</h3>
         <ul>

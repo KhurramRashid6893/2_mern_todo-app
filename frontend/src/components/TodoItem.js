@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import '../css/todoItem.css';
 import EditTodoForm from './EditTodoForm';
+import apiClient from '../api'; // ✅ Use apiClient instead of axios
 
 const TodoItem = ({ todo, onUpdate, currentUserId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  // Debug to check ID values
-  console.log('DEBUG -> todo.user:', todo.user, 'currentUserId:', currentUserId);
 
   // Ensure both IDs are strings for comparison
   const showActions = todo.user?.toString() === currentUserId?.toString();
@@ -16,7 +13,7 @@ const TodoItem = ({ todo, onUpdate, currentUserId }) => {
   const toggleComplete = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/todos/${todo._id}`, {
+      await apiClient.put(`/api/todos/${todo._id}`, {
         completed: !todo.completed
       }, {
         headers: { 'x-auth-token': token }
@@ -32,7 +29,7 @@ const TodoItem = ({ todo, onUpdate, currentUserId }) => {
     try {
       setIsDeleting(true);
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/todos/${todo._id}`, {
+      await apiClient.delete(`/api/todos/${todo._id}`, {
         headers: { 'x-auth-token': token }
       });
       onUpdate();
@@ -104,24 +101,19 @@ const TodoItem = ({ todo, onUpdate, currentUserId }) => {
         </div>
       </div>
 
-      {/* TEMP: Always show actions for testing */}
-      <div className="todo-actions">
-        <button onClick={toggleComplete} className="action-btn complete-btn">
-          {todo.completed ? '↩️ Undo' : '✔️ Complete'}
-        </button>
-        <button onClick={() => setIsEditing(true)} className="action-btn edit-btn">
-          ✏️ Edit
-        </button>
-        <button onClick={deleteTodo} className="action-btn delete-btn">
-          {isDeleting ? '🗑️ Deleting...' : '🗑️ Delete'}
-        </button>
-      </div>
-
-      {/* 👉 Once debugged, switch back to:
       {showActions && (
-        <div className="todo-actions"> ... </div>
-      )} 
-      */}
+        <div className="todo-actions">
+          <button onClick={toggleComplete} className="action-btn complete-btn">
+            {todo.completed ? '↩️ Undo' : '✔️ Complete'}
+          </button>
+          <button onClick={() => setIsEditing(true)} className="action-btn edit-btn">
+            ✏️ Edit
+          </button>
+          <button onClick={deleteTodo} className="action-btn delete-btn">
+            {isDeleting ? '🗑️ Deleting...' : '🗑️ Delete'}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

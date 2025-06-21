@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import '../css/editTodoForm.css';
+import apiClient from '../api';  // ✅ Use apiClient instead of direct axios
 
 const EditTodoForm = ({ todo, onUpdate, onCancel }) => {
   const [title, setTitle] = useState(todo.title);
@@ -21,7 +21,8 @@ const EditTodoForm = ({ todo, onUpdate, onCancel }) => {
         return;
       }
 
-      await axios.put(`http://localhost:5000/api/todos/${todo._id}`, {
+      // ✅ Use apiClient so no hardcoded URL
+      await apiClient.put(`/api/todos/${todo._id}`, {
         title,
         description,
         priority,
