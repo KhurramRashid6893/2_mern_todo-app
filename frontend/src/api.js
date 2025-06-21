@@ -8,11 +8,10 @@
 //   baseURL: API_URL
 // });
 
-// export default apiClient;
 import axios from 'axios';
 
-// ✅ Set API URL: Use env or fallback to Render URL
-const API_URL = process.env.REACT_APP_API_URL || 'https://mern-todo-backend-zt8l.onrender.com';
+// ✅ Hardcoded Render backend URL
+const API_URL = 'https://mern-todo-backend-zt8l.onrender.com';
 
 // ✅ Create axios instance
 const apiClient = axios.create({
