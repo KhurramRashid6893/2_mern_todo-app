@@ -1,0 +1,14 @@
+/* Custom styles that complement Tailwind */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.todo-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.todo-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}

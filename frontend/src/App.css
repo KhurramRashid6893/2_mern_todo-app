@@ -1,0 +1,57 @@
+/* app.css */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.auth-toggle {
+  margin-bottom: 2rem;
+}
+
+.auth-toggle button {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.auth-toggle button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.user-info {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #4B5563;
+}
+
+.user-info span {
+  color: #4F46E5;
+  font-weight: 600;
+}
+
+.text-center {
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding: 1rem;
+  }
+  
+  .auth-toggle {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .auth-toggle button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .user-info {
+    font-size: 1rem;
+  }
+}
